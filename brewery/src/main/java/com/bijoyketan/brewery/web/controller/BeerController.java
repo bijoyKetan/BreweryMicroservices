@@ -21,13 +21,11 @@ import java.util.UUID;
 public class BeerController {
 
     private final BeerService beerService;
-    private final CustomerService customerService;
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    public BeerController(BeerService beerService, CustomerService customerService) {
+    public BeerController(BeerService beerService) {
         this.beerService = beerService;
-        this.customerService = customerService;
     }
 
     //Get beer by pathvariable
@@ -35,17 +33,6 @@ public class BeerController {
     public ResponseEntity<Object> getBeerByID(HttpServletRequest request, @PathVariable String beerID) {
         try {
             return new ResponseEntity<>(beerService.getBeerbyID(UUID.fromString(beerID)), HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    //Get customer by customerID in pathvariable
-    @GetMapping(value = "/customer/{customerID}")
-    public ResponseEntity<Object> getCustomerByID(@PathVariable UUID customerID) {
-        try {
-            return new ResponseEntity<>(customerService.getCustomerByID(customerID), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
