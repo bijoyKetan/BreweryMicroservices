@@ -1,7 +1,7 @@
 package com.bijoyketan.brewery.web.controller;
 
 import com.bijoyketan.brewery.service.BeerService;
-import com.bijoyketan.brewery.web.model.BeerDto;
+import com.bijoyketan.brewery.service.CustomerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,22 +21,34 @@ import java.util.UUID;
 public class BeerController {
 
     private final BeerService beerService;
-    private Logger log = LoggerFactory.getLogger(this.getClass());
+    private final CustomerService customerService;
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    public BeerController(BeerService beerService) {
+    public BeerController(BeerService beerService, CustomerService customerService) {
         this.beerService = beerService;
+        this.customerService = customerService;
     }
 
     //Get beer by pathvariable
     @GetMapping(value = "/{beerID}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> getBeerByID(HttpServletRequest request,  @PathVariable String beerID) {
-        try{
+    public ResponseEntity<Object> getBeerByID(HttpServletRequest request, @PathVariable String beerID) {
+        try {
             return new ResponseEntity<>(beerService.getBeerbyID(UUID.fromString(beerID)), HttpStatus.OK);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-            log.debug(request.getParameter("json"));
-            return new ResponseEntity<>("Error in getBeerByID request. Check the payload", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //Get customer by customerID in pathvariable
+    @GetMapping(value = "/customer/{customerID}")
+    public ResponseEntity<Object> getCustomerByID(@PathVariable UUID customerID) {
+        try {
+            return new ResponseEntity<>(customerService.getCustomerByID(customerID), HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
