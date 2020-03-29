@@ -20,8 +20,8 @@ public class BeerServiceImpl implements BeerService {
     public BeerDto createBeer(BeerDto beerDto) {
         return BeerDto.builder()
                 .id(UUID.randomUUID())
-                .name("Corona")
-                .style("Lime")
+                .name(beerDto.getName())
+                .style(beerDto.getStyle())
                 .build();
     }
 

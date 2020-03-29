@@ -39,13 +39,14 @@ public class BeerController {
     }
 
     //For POST - provide the resource that needs to be created.
+    // Resource provided in JSON format
     @PostMapping
-    public ResponseEntity<Object> createBeer(BeerDto beerDto) {
+    public ResponseEntity<Object> createBeer(@RequestBody BeerDto beerDto) {
         try {
-            //TODO - Create beerDto properly using JSON representation of the object
-            BeerDto saveBeer = beerService.createBeer(beerDto);
+            BeerDto createdBeer = beerService.createBeer(beerDto);
             HttpHeaders headers = new HttpHeaders();
-            headers.add("Post Header", "api/v1/beer  \n" + saveBeer.toString());
+            headers.add("Post Header", "api/v1/beer  \n" + createdBeer.toString());
+            log.info("Created beer is: " + createdBeer.toString());
             return new ResponseEntity<>(headers, HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
@@ -57,9 +58,9 @@ public class BeerController {
     //Also provide the new state of the resource
     @PutMapping("/{beerID}")
     public ResponseEntity<Object> updateBeerDto(@PathVariable UUID beerID, @RequestBody BeerDto beerDto) {
-        try{
+        try {
             return new ResponseEntity<>(beerService.updateBeer(beerID, beerDto), HttpStatus.ACCEPTED);
-        } catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
