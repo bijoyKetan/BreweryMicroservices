@@ -27,7 +27,7 @@ public class BeerController {
         this.beerService = beerService;
     }
 
-    //Get beer by pathvariable
+    //GET - Retrieve a resource by some ID or by using a set of query parameters.
     @GetMapping(value = "/{beerID}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> getBeerByID(HttpServletRequest request, @PathVariable String beerID) {
         try {
@@ -38,7 +38,7 @@ public class BeerController {
         }
     }
 
-    //Task - create a beer resource using a random UUID
+    //For POST - provide the resource that needs to be created.
     @PostMapping
     public ResponseEntity<Object> createBeer(BeerDto beerDto) {
         try {
@@ -48,6 +48,18 @@ public class BeerController {
             headers.add("Post Header", "api/v1/beer  \n" + saveBeer.toString());
             return new ResponseEntity<>(headers, HttpStatus.CREATED);
         } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //PUT - Modify a resource, so pass the resource and also an ID of the existing resource
+    //Also provide the new state of the resource
+    @PutMapping("/{beerID}")
+    public ResponseEntity<Object> updateBeerDto(@PathVariable UUID beerID, @RequestBody BeerDto beerDto) {
+        try{
+            return new ResponseEntity<>(beerService.updateBeer(beerID, beerDto), HttpStatus.ACCEPTED);
+        } catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

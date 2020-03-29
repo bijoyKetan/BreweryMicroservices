@@ -25,5 +25,11 @@ public class BeerServiceImpl implements BeerService {
                 .build();
     }
 
-
+    @Override
+    public BeerDto updateBeer(UUID newBeerId, BeerDto newBeerDto) {
+        BeerDto oldBeerDto = getBeerbyID(newBeerId);
+        oldBeerDto.setName(newBeerDto.getName());
+        oldBeerDto.setStyle(newBeerDto.getStyle());
+        return oldBeerDto;
+    }
 }
