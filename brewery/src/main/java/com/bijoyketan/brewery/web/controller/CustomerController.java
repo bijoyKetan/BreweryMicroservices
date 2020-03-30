@@ -52,9 +52,24 @@ public class CustomerController {
     public ResponseEntity<Object> updateCustomer(@PathVariable UUID newCustomerID, @RequestBody CustomerDTO newCustomerDto) {
         try {
             log.info("Customer updated: " + newCustomerDto.toString());
-            return new ResponseEntity<>(customerService.updateCustomerDto(newCustomerID, newCustomerDto), HttpStatus.OK );
+            return new ResponseEntity<>(customerService.updateCustomerDto(newCustomerID, newCustomerDto), HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //DELETE - delete existing customer
+    @DeleteMapping(value = "/{customerID}")
+    //TODO - complete this
+    public ResponseEntity<Object> deleteCustomer(@PathVariable UUID customerID) {
+        try {
+            customerService.deleteCustomer(customerID);
+            log.info("CustomerDto deleted: " + customerID.toString());
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("Exception in deleteCustomer method...");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
