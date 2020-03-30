@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.nio.channels.ScatteringByteChannel;
 import java.util.UUID;
 
 @RestController
@@ -37,10 +38,22 @@ public class CustomerController {
     //POST - Create customer
     @PostMapping
     public ResponseEntity<Object> createCustomer(@RequestBody CustomerDTO customerDTO) {
-        try{
+        try {
             log.info("Created customer is: " + customerDTO.toString());
             return new ResponseEntity<>(customerService.createCustomerDto(customerDTO), HttpStatus.CREATED);
-        } catch (Exception e){
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //PUT - Modify existing customer
+    @PutMapping("/{newCustomerID}")
+    public ResponseEntity<Object> updateCustomer(@PathVariable UUID newCustomerID, @RequestBody CustomerDTO newCustomerDto) {
+        try {
+            log.info("Customer updated: " + newCustomerDto.toString());
+            return new ResponseEntity<>(customerService.updateCustomerDto(newCustomerID, newCustomerDto), HttpStatus.OK );
+        } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
