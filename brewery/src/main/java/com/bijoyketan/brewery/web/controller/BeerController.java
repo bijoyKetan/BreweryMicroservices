@@ -3,6 +3,8 @@ package com.bijoyketan.brewery.web.controller;
 import com.bijoyketan.brewery.service.BeerService;
 import com.bijoyketan.brewery.service.CustomerService;
 import com.bijoyketan.brewery.web.model.BeerDto;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +19,10 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/beer")
+@Slf4j
 public class BeerController {
 
     private final BeerService beerService;
-    private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     public BeerController(BeerService beerService) {
@@ -60,6 +62,19 @@ public class BeerController {
     public ResponseEntity<Object> updateBeerDto(@PathVariable UUID beerID, @RequestBody BeerDto beerDto) {
         try {
             return new ResponseEntity<>(beerService.updateBeer(beerID, beerDto), HttpStatus.ACCEPTED);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //DELETE - Given a beerID, delete it.
+    @DeleteMapping("/{beerID}")
+    public ResponseEntity<Object> deleteBeer(@PathVariable UUID beerID) {
+        try {
+            beerService.deleteBeer(beerID);
+            log.info("BeerDto deleted, UUID: " + beerID.toString());
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

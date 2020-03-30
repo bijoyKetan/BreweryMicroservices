@@ -32,4 +32,10 @@ public class BeerServiceImpl implements BeerService {
         oldBeerDto.setStyle(newBeerDto.getStyle());
         return oldBeerDto;
     }
+
+    @Override
+    public BeerDto deleteBeer(UUID beerID) {
+        //TODO - implementation of the delete beer method.
+        return null;
+    }
 }
