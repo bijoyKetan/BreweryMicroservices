@@ -1,18 +1,19 @@
 package com.bijoyketan.brewery.web.controller;
 
 import com.bijoyketan.brewery.service.CustomerService;
+import com.bijoyketan.brewery.web.model.BeerDto;
+import com.bijoyketan.brewery.web.model.CustomerDTO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
 @RestController
 @RequestMapping("api/v1/customer")
+@Slf4j
 public class CustomerController {
 
     private final CustomerService customerService;
@@ -28,6 +29,18 @@ public class CustomerController {
         try {
             return new ResponseEntity<>(customerService.getCustomerByID(customerID), HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    //POST - Create customer
+    @PostMapping
+    public ResponseEntity<Object> createCustomer(@RequestBody CustomerDTO customerDTO) {
+        try{
+            log.info("Created customer is: " + customerDTO.toString());
+            return new ResponseEntity<>(customerService.createCustomerDto(customerDTO), HttpStatus.CREATED);
+        } catch (Exception e){
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }

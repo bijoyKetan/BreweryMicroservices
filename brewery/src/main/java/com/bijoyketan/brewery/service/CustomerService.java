@@ -6,4 +6,6 @@ import java.util.UUID;
 
 public interface CustomerService {
     CustomerDTO getCustomerByID(UUID customerID);
+
+    CustomerDTO createCustomerDto(CustomerDTO customerDTO);
 }
