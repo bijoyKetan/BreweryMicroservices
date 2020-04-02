@@ -6,36 +6,25 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
+//TODO - implementation of the delete beer method.
 public class BeerServiceImpl implements BeerService {
     @Override
     public BeerDto getBeerbyID(UUID beerID) {
-        return BeerDto.builder()
-                .id(UUID.randomUUID())
-                .name("Miller Lite")
-                .style("Galaxy")
-                .build();
+        return null;
     }
 
     @Override
     public BeerDto createBeer(BeerDto beerDto) {
-        return BeerDto.builder()
-                .id(UUID.randomUUID())
-                .name(beerDto.getName())
-                .style(beerDto.getStyle())
-                .build();
+        return null;
     }
 
     @Override
     public BeerDto updateBeer(UUID newBeerId, BeerDto newBeerDto) {
-        BeerDto oldBeerDto = getBeerbyID(newBeerId);
-        oldBeerDto.setName(newBeerDto.getName());
-        oldBeerDto.setStyle(newBeerDto.getStyle());
-        return oldBeerDto;
+        return null;
     }
 
     @Override
     public BeerDto deleteBeer(UUID beerID) {
-        //TODO - implementation of the delete beer method.
         return null;
     }
 }
