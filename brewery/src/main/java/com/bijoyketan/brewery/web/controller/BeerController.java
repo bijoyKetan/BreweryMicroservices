@@ -31,7 +31,7 @@ public class BeerController {
 
     //GET - Retrieve a resource by some ID or by using a set of query parameters.
     @GetMapping(value = "/{beerID}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> getBeerByID(HttpServletRequest request, @PathVariable String beerID) {
+    public ResponseEntity<Object> getBeerByID(@PathVariable String beerID) {
         try {
             return new ResponseEntity<>(beerService.getBeerbyID(UUID.fromString(beerID)), HttpStatus.OK);
         } catch (Exception e) {
@@ -45,11 +45,11 @@ public class BeerController {
     @PostMapping
     public ResponseEntity<Object> createBeer(@RequestBody BeerDto beerDto) {
         try {
-            BeerDto createdBeer = beerService.createBeer(beerDto);
+            beerService.createBeer(beerDto);
             HttpHeaders headers = new HttpHeaders();
-            headers.add("Post Header", "api/v1/beer  \n" + createdBeer.toString());
-            log.info("Created beer is: " + createdBeer.toString());
-            return new ResponseEntity<>(headers, HttpStatus.CREATED);
+            headers.add("Post Header", "api/v1/beer  \n" + beerDto);
+            log.info("Created beer is: " + beerDto);
+            return new ResponseEntity<>(beerDto, HttpStatus.CREATED);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
